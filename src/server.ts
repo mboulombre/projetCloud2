@@ -13,6 +13,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
+   //Mise en place dune restriction
+   app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://image-filter-cloud.us-east-1.elasticbeanstalk.com");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });
+
+
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
@@ -43,7 +51,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
                  deleteLocalFiles([filteredpath])
                 })
               }).catch(error => {
-                res.status(402).json({
+                res.status(422).json({
                   "error": "Erreur",
                   "message": error
                 })
